@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05060f" />
+  <meta name="description" content="A premium, interactive birthday celebration for Neha." />
+  <title>Happy Birthday, Neha! 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="loader" aria-label="Preparing your surprise">
+    <div class="loader-orb">✦</div>
+    <p>Crafting a little magic</p>
+    <div class="progress"><i></i></div>
+  </div>
+
+  <!-- Mouse effects -->
+  <div id="cursor-glow"></div>
+  <div id="mouse-spotlight" aria-hidden="true"></div>
+
+  <!-- Celebration canvas (confetti / fireworks) -->
+  <canvas id="celebration-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient background: aurora blobs + stars + drifting sparkles -->
+  <div id="particles" aria-hidden="true">
+    <div class="aurora aurora-a"></div>
+    <div class="aurora aurora-b"></div>
+    <div class="aurora aurora-c"></div>
+    <div class="star-field" id="star-field"></div>
+    <div class="sparkle-field" id="sparkle-field"></div>
+  </div>
+
+  <audio id="birthday-audio" loop preload="auto"></audio>
+
+  <!-- Navigation -->
+  <nav class="nav glass" aria-label="Site navigation">
+    <a class="brand" href="#welcome">N<span>✦</span></a>
+    <div class="nav-links" id="nav-links">
+      <span class="nav-indicator" id="nav-indicator"></span>
+      <a href="#letter" data-nav>Letter</a>
+      <a href="#gallery" data-nav>Memories</a>
+      <a href="#timeline" data-nav>Timeline</a>
+      <a href="#cake" data-nav>Cake</a>
+      <a href="#finale" data-nav>Celebrate</a>
+    </div>
+    <button id="music-toggle" class="icon-btn" aria-label="Play music">♫</button>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section id="welcome" class="scene hero active">
+      <div class="balloon b1"></div><div class="balloon b2"></div><div class="balloon b3"></div>
+      <div class="hero-content reveal">
+        <span class="eyebrow">A day made just for you</span>
+        <h1>Happy Birthday,<br><em data-name>Neha</em>.</h1>
+        <p>There's a little universe of joy waiting inside.</p>
+        <button id="open-surprise" class="primary-btn">Open Your Surprise <span>🎁</span></button>
+        <small>Tap to begin the story</small>
+      </div>
+      <div class="scroll-hint">SCROLL TO EXPLORE <i></i></div>
+    </section>
+
+    <!-- Celebration -->
+    <section id="celebrate" class="scene celebration">
+      <div class="celebration-copy reveal">
+        <span class="eyebrow">21 July · a day to celebrate</span>
+        <h2>Today, the world<br>glows a little <em>brighter.</em></h2>
+        <p>Because someone wonderfully rare was born.</p>
+      </div>
+      <div class="orbital">
+        <div class="orbit-card glass"><b data-name>Neha</b><span>the main character</span></div>
+      </div>
+    </section>
+
+    <!-- Letter -->
+    <section id="letter" class="scene letter-section">
+      <div class="letter-wrap reveal">
+        <span class="eyebrow">A note from the heart</span>
+        <article class="letter-card glass">
+          <div class="stamp">♥</div>
+          <h2>Dear <span data-name>Neha</span>,</h2>
+          <p id="typed-letter" aria-live="polite"></p>
+          <button id="finish-letter" class="text-btn">Read it all <span>→</span></button>
+          <div class="signature">with so much love</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="scene gallery-section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Captured in time</span>
+        <h2>Your beautiful <em>moments.</em></h2>
+        <p>Every frame carries a little piece of magic.</p>
+      </div>
+      <div id="gallery-grid" class="gallery-grid"></div>
+      <p id="gallery-help" class="asset-note">Add your photos in <code>assets/images</code>, then list them in <code>js/config.js</code>.</p>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline" class="scene timeline-section">
+      <div class="section-head reveal">
+        <span class="eyebrow">The story so far</span>
+        <h2>Memories worth<br><em>holding close.</em></h2>
+      </div>
+      <div id="timeline-list" class="timeline-list"></div>
+    </section>
+
+    <!-- Cake -->
+    <section id="cake" class="scene cake-section">
+      <div class="cake-copy reveal">
+        <span class="eyebrow">One wish, all yours</span>
+        <h2>Make a wish,<br><em>Neha.</em></h2>
+        <p>Tap each candle and watch your wish take flight.</p>
+        <p id="wish-status" class="wish-status">Five tiny flames are waiting.</p>
+      </div>
+      <div class="cake-stage" aria-label="Interactive birthday cake">
+        <div class="cake">
+          <div class="candles" id="candles"></div>
+          <div class="frosting"></div>
+          <div class="cake-top"></div>
+          <div class="cake-body"><i></i><i></i><i></i></div>
+          <div class="cake-base"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gift -->
+    <section id="gift" class="scene gift-section">
+      <div class="gift-inner reveal">
+        <span class="eyebrow">One more thing</span>
+        <h2>A little surprise<br><em>for you.</em></h2>
+        <button id="gift-box" class="gift-box" aria-label="Open your surprise gift">
+          <span class="lid"></span><span class="ribbon-v"></span><span class="ribbon-h"></span><span class="box-face">?</span>
+        </button>
+        <p id="gift-message">Click the gift to unwrap a note.</p>
+      </div>
+    </section>
+
+    <!-- Wishes -->
+    <section id="wishes" class="scene wishes-section">
+      <div class="section-head reveal">
+        <span class="eyebrow">From all our hearts</span>
+        <h2>A wall of <em>wishes.</em></h2>
+      </div>
+      <div id="wishes-wall" class="wishes-wall"></div>
+    </section>
+
+    <!-- Finale -->
+    <section id="finale" class="scene finale">
+      <div class="finale-content reveal">
+        <span class="eyebrow">And so the celebration begins</span>
+        <h2>Here's to your<br>most beautiful <em>year yet.</em></h2>
+        <p>Keep smiling. Keep shining. Keep being unmistakably you.</p>
+        <button id="replay" class="primary-btn">Celebrate Again <span>✦</span></button>
+        <div class="final-heart">♥</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo preview">
+    <button aria-label="Close preview">×</button>
+    <img alt="Memory preview" />
+  </div>
+
+  <!-- Floating music player -->
+  <div class="audio-panel glass">
+    <button id="audio-play" class="icon-btn" aria-label="Play or pause music">▶</button>
+    <div class="audio-meta">
+      <span class="audio-title">Birthday Song</span>
+      <div class="audio-progress-track" id="audio-progress-track" aria-label="Seek music position">
+        <div class="audio-progress-fill" id="audio-progress-fill"></div>
+      </div>
+    </div>
+    <button id="audio-mute" class="icon-btn" aria-label="Mute music">◔</button>
+    <input id="volume" type="range" min="0" max="1" step=".05" value=".55" aria-label="Music volume">
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
